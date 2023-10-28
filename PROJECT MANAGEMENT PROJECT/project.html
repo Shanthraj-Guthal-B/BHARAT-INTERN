@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Management Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #task-list {
+            width: 100%;
+        }
+        .task {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .task input[type="text"],
+        .task select,
+        .task textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+        }
+        .task select {
+            padding: 10px;
+        }
+        .task button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+            background-color: #007BFF;
+            color: #fff;
+            border-radius: 4px;
+        }
+        .task button:hover {
+            background-color: #0056b3;
+        }
+        h1 {
+            color: #007BFF;
+            text-align: center;
+        }
+        h2 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Project Management Tool</h1>
+        <div id="task-form">
+            <input type="text" id="task-name" placeholder="Task Name">
+            <select id="assignee">
+                <option value="">Assign to</option>
+                <option value="User 1">User 1</option>
+                <option value="User 2">User 2</option>
+                <option value="User 3">User 3</option>
+            </select>
+            <input type="text" id="due-date" placeholder="Due Date (YYYY-MM-DD)">
+            <input type="text" id="category" placeholder="Category">
+            <textarea id="task-details" placeholder="Task Details"></textarea>
+            <button onclick="createTask()">Create</button>
+        </div>
+        <h2>Task List</h2>
+        <div id="task-list"></div>
+    </div>
+
+    <script>
+        let taskId = 1;
+
+        function createTask() {
+            const taskName = document.getElementById('task-name').value;
+            const assignee = document.getElementById('assignee').value;
+            const dueDate = document.getElementById('due-date').value;
+            const category = document.getElementById('category').value;
+            const taskDetails = document.getElementById('task-details').value;
+
+            if (!taskName || !assignee || !dueDate || !category) {
+                alert("Task name, assignee, due date, and category are required.");
+                return;
+            }
+
+            const task = {
+                id: taskId,
+                name: taskName,
+                assignee: assignee,
+                dueDate: dueDate,
+                category: category,
+                details: taskDetails,
+                status: "To Do"
+            };
+
+            taskId++;
+
+            addTaskToTaskList(task);
+        }
+
+        function addTaskToTaskList(task) {
+            const taskList = document.getElementById('task-list');
+            const taskElement = document.createElement('div');
+            taskElement.className = 'task';
+            taskElement.innerHTML = `
+                <span>Task: ${task.name}</span>
+                <span>Assignee: ${task.assignee}</span>
+                <span>Due Date: ${task.dueDate}</span>
+                <span>Category: ${task.category}</span>
+                <span>Status: <span class="status">${task.status}</span></span>
+                <p>Details: ${task.details}</p>
+                <button onclick="changeStatus(${task.id})">Change Status</button>
+                <button onclick="deleteTask(${task.id})">Delete</button>
+            `;
+            taskElement.id = task.id;
+            taskList.appendChild(taskElement);
+        }
+
+        function changeStatus(taskId) {
+            const taskElement = document.getElementById(taskId);
+            const statusElement = taskElement.querySelector('.status');
+            const currentStatus = statusElement.textContent;
+            const newStatus = prompt(`Change status to (In Progress, Complete):`, currentStatus);
+
+            if (newStatus !== null) {
+                if (newStatus === "In Progress" || newStatus === "Complete") {
+                    statusElement.textContent = newStatus;
+                } else {
+                    alert('Invalid status. Please enter "In Progress" or "Complete".');
+                }
+            }
+        }
+
+        function deleteTask(taskId) {
+            const taskElement = document.getElementById(taskId);
+            taskElement.remove();
+        }
+    </script>
+</body>
+</html>
