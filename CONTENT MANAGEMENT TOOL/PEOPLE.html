@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        section {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        input, textarea, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+    <title>Content Management Tool</title>
+</head>
+<body>
+    <header>
+        <h1>Blog Management Tool</h1>
+    </header>
+    <section id="blog-editor">
+        <h2>Create a New Blog Post</h2>
+        <form id="blog-form">
+            <input type="text" id="title" placeholder="Title" required>
+            <textarea id="content" placeholder="Content" required></textarea>
+            <input type="file" id="image" accept="image/*" required>
+            <button type="submit">Publish</button>
+        </form>
+    </section>
+    <section id="blog-list">
+        <h2>Blog Posts</h2>
+        <ul id="posts-list">
+            <!-- Blog posts will be displayed here -->
+        </ul>
+    </section>
+    <script>
+        const blogForm = document.getElementById('blog-form');
+        const postsList = document.getElementById('posts-list');
+
+        blogForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const image = document.getElementById('image').files[0]; // Get the uploaded image
+
+            if (title && content && image) {
+                const listItem = document.createElement('li');
+                const postImage = document.createElement('img');
+                postImage.src = URL.createObjectURL(image); // Display the uploaded image
+                const postTitle = document.createElement('h3');
+                postTitle.textContent = title;
+                const postContent = document.createElement('p');
+                postContent.textContent = content;
+                listItem.appendChild(postImage);
+                listItem.appendChild(postTitle);
+                listItem.appendChild(postContent);
+                postsList.appendChild(listItem);
+            }
+
+            blogForm.reset();
+        });
+    </script>
+</body>
+</html>
